@@ -678,3 +678,424 @@ func main() {
 	defer add(10, 10)
 }
 ```
+## Methods in Golang
+Go language support methods. Go methods are similar to Go function with one difference, i.e, the method contains a receiver argument in it. With the help of the receiver argument, the method can access the properties of the receiver.
+
+```go
+// Go program to illustrate the
+// method with struct type receiver
+package main
+
+import "fmt"
+
+// Author structure
+type author struct {
+	name	 string
+	branch string
+	particles int
+	salary int
+}
+
+// Method with a receiver
+// of author type
+func (a author) show() {
+
+	fmt.Println("Author's Name: ", a.name)
+	fmt.Println("Branch Name: ", a.branch)
+	fmt.Println("Published articles: ", a.particles)
+	fmt.Println("Salary: ", a.salary)
+}
+
+// Main function
+func main() {
+
+	// Initializing the values
+	// of the author structure
+	res := author{
+		name:	 "Sona",
+		branch: "CSE",
+		particles: 203,
+		salary: 34000,
+	}
+
+	// Calling the method
+	res.show()
+}
+```
+### Method with Non-Struct Type Receiver
+```go
+// Go program to illustrate the method
+// with non-struct type receiver
+package main
+
+import "fmt"
+
+// Type definition
+type data int
+
+// Defining a method with
+// non-struct type receiver
+func (d1 data) multiply(d2 data) data {
+	return d1 * d2
+}
+
+/*
+// if you try to run this code,
+// then compiler will throw an error
+func(d1 int)multiply(d2 int)int{
+return d1 * d2
+}
+*/
+
+// Main function
+func main() {
+	value1 := data(23)
+	value2 := data(20)
+	res := value1.multiply(value2)
+	fmt.Println("Final result: ", res)
+}
+```
+
+### Methods with Pointer Receiver
+```go
+// Go program to illustrate pointer receiver
+package main
+
+import "fmt"
+
+// Author structure
+type author struct {
+	name	 string
+	branch string
+	particles int
+}
+
+// Method with a receiver of author type
+func (a *author) show(abranch string) {
+	(*a).branch = abranch
+}
+
+// Main function
+func main() {
+
+	// Initializing the values
+	// of the author structure
+	res := author{
+		name: "Sona",
+		branch: "CSE",
+	}
+
+	fmt.Println("Author's name: ", res.name)
+	fmt.Println("Branch Name(Before): ", res.branch)
+
+	// Creating a pointer
+	p := &res
+
+	// Calling the show method
+	p.show("ECE")
+	fmt.Println("Author's name: ", res.name)
+	fmt.Println("Branch Name(After): ", res.branch)
+}
+```
+### Method Can Accept both Pointer and Value
+```go
+// Go program to illustrate how the
+// method can accept pointer and value
+
+package main
+
+import "fmt"
+
+// Author structure
+type author struct {
+	name string
+	branch string
+}
+
+// Method with a pointer
+// receiver of author type
+func (a *author) show_1(abranch string) {
+	(*a).branch = abranch
+}
+
+// Method with a value
+// receiver of author type
+func (a author) show_2() {
+
+	a.name = "Gourav"
+	fmt.Println("Author's name(Before) : ", a.name)
+}
+
+// Main function
+func main() {
+
+	// Initializing the values
+	// of the author structure
+	res := author{
+		name: "Sona",
+		branch: "CSE",
+	}
+
+	fmt.Println("Branch Name(Before): ", res.branch)
+
+	// Calling the show_1 method
+	// (pointer method) with value
+	res.show_1("ECE")
+	fmt.Println("Branch Name(After): ", res.branch)
+
+	// Calling the show_2 method
+	// (value method) with a pointer
+	(&res).show_2()
+	fmt.Println("Author's name(After): ", res.name)
+}
+```
+
+### Structures in Golang
+A structure or struct in Golang is a user-defined type that allows to group/combine items of possibly different types into a single type. Any real-world entity which has some set of properties/fields can be represented as a struct. This concept is generally compared with the classes in object-oriented programming. It can be termed as a lightweight class that does not support inheritance but supports composition.
+
+#### Example Struct
+```go
+// Golang program to show how to
+// declare and define the struct
+
+package main
+
+import "fmt"
+
+// Defining a struct type
+type Address struct {
+	Name string
+	city string
+	Pincode int
+}
+
+func main() {
+
+	// Declaring a variable of a `struct` type
+	// All the struct fields are initialized
+	// with their zero value
+	var a Address
+	fmt.Println(a)
+
+	// Declaring and initializing a
+	// struct using a struct literal
+	a1 := Address{"Akshay", "Dehradun", 3623572}
+
+	fmt.Println("Address1: ", a1)
+
+	// Naming fields while
+	// initializing a struct
+	a2 := Address{Name: "Anikaa", city: "Ballia",
+								Pincode: 277001}
+
+	fmt.Println("Address2: ", a2)
+
+	// Uninitialized fields are set to
+	// their corresponding zero-value
+	a3 := Address{Name: "Delhi"}
+	fmt.Println("Address3: ", a3)
+}
+```
+### How to access fields of a struct?
+```go
+// Golang program to show how to
+// access the fields of struct
+package main
+
+import "fmt"
+
+// defining the struct
+type Car struct {
+	Name, Model, Color string
+	WeightInKg		 float64
+}
+
+// Main Function
+func main() {
+	c := Car{Name: "Ferrari", Model: "GTC4",
+			Color: "Red", WeightInKg: 1920}
+
+	// Accessing struct fields
+	// using the dot operator
+	fmt.Println("Car Name: ", c.Name)
+	fmt.Println("Car Color: ", c.Color)
+
+	// Assigning a new value
+	// to a struct field
+	c.Color = "Black"
+	
+	// Displaying the result
+	fmt.Println("Car: ", c)
+}
+```
+### Pointers to a struct
+```go
+// Golang program to illustrate
+// the pointer to struct
+package main
+
+import "fmt"
+
+// defining a structure
+type Employee struct {
+	firstName, lastName string
+	age, salary int
+}
+
+func main() {
+
+	// passing the address of struct variable
+	// emp8 is a pointer to the Employee struct
+	emp8 := &Employee{"Sam", "Anderson", 55, 6000}
+
+	// (*emp8).firstName is the syntax to access
+	// the firstName field of the emp8 struct
+	fmt.Println("First Name:", (*emp8).firstName)
+	fmt.Println("Age:", (*emp8).age)
+}
+```
+### Nested Structure in Golang
+A structure or struct in Golang is a user-defined type, which allows us to create a group of elements of different types into a single unit. 
+
+```go
+// Golang program to illustrate
+// the nested structure
+package main
+
+import "fmt"
+
+// Creating structure
+type Author struct {
+	name string
+	branch string
+	year int
+}
+
+// Creating nested structure
+type HR struct {
+
+	// structure as a field
+	details Author
+}
+
+func main() {
+
+	// Initializing the fields
+	// of the structure
+	result := HR{
+	
+		details: Author{"Sona", "ECE", 2013},
+	}
+
+	// Display the values
+	fmt.Println("\nDetails of Author")
+	fmt.Println(result)
+}
+```
+### Example 2
+```go
+// Golang program to illustrate
+// the nested structure
+package main
+
+import "fmt"
+
+// Creating structure
+type Student struct {
+	name string
+	branch string
+	year int
+}
+
+// Creating nested structure
+type Teacher struct {
+	name string
+	subject string
+	exp	 int
+	details Student
+}
+
+func main() {
+
+	// Initializing the fields
+	// of the structure
+	result := Teacher{
+		name: "Suman",
+		subject: "Java",
+		exp:	 5,
+		details: Student{"Bongo", "CSE", 2},
+	}
+
+	// Display the values
+	fmt.Println("Details of the Teacher")
+	fmt.Println("Teacher's name: ", result.name)
+	fmt.Println("Subject: ", result.subject)
+	fmt.Println("Experience: ", result.exp)
+
+	fmt.Println("\nDetails of Student")
+	fmt.Println("Student's name: ", result.details.name)
+	fmt.Println("Student's branch name: ", result.details.branch)
+	fmt.Println("Year: ", result.details.year)
+}
+```
+
+### Anonymous Structure and Field in Golang
+A structure or struct in Golang is a user-defined type, which allows us to create a group of elements of different types into a single unit. Any real-world entity which has some set of properties or fields can be represented as a struct.
+
+```go
+// Go program to illustrate the
+// concept of anonymous structure
+package main
+
+import "fmt"
+
+// Main function
+func main() {
+
+	// Creating and initializing
+	// the anonymous structure
+	Element := struct {
+		name	 string
+		branch string
+		language string
+		Particles int
+	}{
+		name:	 "Pikachu",
+		branch: "ECE",
+		language: "C++",
+		Particles: 498,
+	}
+
+	// Display the anonymous structure
+	fmt.Println(Element)
+}
+```
+#### Example
+```go
+// Go program to illustrate the
+// concept of anonymous structure
+package main
+
+import "fmt"
+
+// Creating a structure
+// with anonymous fields
+type student struct {
+	int
+	string
+	float64
+}
+
+// Main function
+func main() {
+
+	// Assigning values to the anonymous
+	// fields of the student structure
+	value := student{123, "Bud", 8900.23}
+
+	// Display the values of the fields
+	fmt.Println("Enrollment number : ", value.int)
+	fmt.Println("Student name : ", value.string)
+	fmt.Println("Package price : ", value.float64)
+}
+```
